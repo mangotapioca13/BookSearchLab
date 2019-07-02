@@ -5,13 +5,20 @@ import android.text.TextUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 
+@Parcel
 public class Book {
-    private String openLibraryId;
-    private String author;
-    private String title;
+    String openLibraryId;
+    String author;
+    String title;
+    String publishYear;
+
+    public String getPublishYear() {
+        return publishYear;
+    }
 
     public String getOpenLibraryId() {
         return openLibraryId;
@@ -30,6 +37,8 @@ public class Book {
         return "https://covers.openlibrary.org/b/olid/" + openLibraryId + "-L.jpg?default=false";
     }
 
+    public Book() {}
+
     // Returns a Book given the expected JSON
     public static Book fromJson(JSONObject jsonObject) {
         Book book = new Book();
@@ -44,6 +53,8 @@ public class Book {
             }
             book.title = jsonObject.has("title_suggest") ? jsonObject.getString("title_suggest") : "";
             book.author = getAuthor(jsonObject);
+            book.publishYear = jsonObject.has("publish_year") ? jsonObject.getString("publish_year") : "";
+
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
