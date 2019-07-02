@@ -1,7 +1,10 @@
 package com.codepath.android.booksearch.activities;
 
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,11 +17,15 @@ import com.codepath.android.booksearch.models.Book;
 
 import org.parceler.Parcels;
 
+import java.io.File;
+
 public class BookDetailActivity extends AppCompatActivity {
+
     private ImageView ivBookCover;
     private TextView tvTitle;
     private TextView tvAuthor;
-    Book book;
+    private Book book;
+    ShareActionProvider miShareAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +59,24 @@ public class BookDetailActivity extends AppCompatActivity {
                 .into(ivBookCover);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_book_detail, menu);
+
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+
+        // Fetch reference to the share action provider
+        miShareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
+        // getExternalFilesDir() + "/Pictures" should match the declaration in fileprovider.xml paths
+        File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
+
+        // wrap File object into a content provider. NOTE: authority here should match authority in manifest declaration
+        // bmpUri = FileProvider.getUriForFile(this, "com.codepath.fileprovider", file);
+
+        // Return true to display menu
         return true;
     }
 
