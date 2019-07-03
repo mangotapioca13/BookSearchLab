@@ -78,7 +78,7 @@ public class BookDetailActivity extends AppCompatActivity {
 
         // Return true to display menu
         return true;
-    } // hello
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
